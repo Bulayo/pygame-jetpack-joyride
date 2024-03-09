@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
         self.bullet_group = pygame.sprite.Group()
         self.bullet_delay = 0
         self.lazar_group = pygame.sprite.Group()
+        self.indicator_group = pygame.sprite.Group()
+        self.rocket_group = pygame.sprite.Group()
 
 
     def draw(self, win):
@@ -29,7 +31,10 @@ class Player(pygame.sprite.Sprite):
         self.bullet_group.update()
         self.lazar_group.draw(win)
         self.lazar_group.update()
-
+        self.indicator_group.draw(win)
+        self.indicator_group.update(self.rect.y)
+        self.rocket_group.draw(win)
+        
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -79,6 +84,17 @@ class Player(pygame.sprite.Sprite):
         self.lazar = Lazars()
         if len(self.lazar_group) <= 6:
             self.lazar_group.add(self.lazar)
+
+        self.indicator = Indicator()
+        if len(self.indicator_group) <= 1:
+            self.indicator_group.add(self.indicator)
+
+        self.rocket = Rocket()
+        self.rocket_group.add(self.rocket)
+        self.rocket_group.update(self.rect.y)
+
+        if self.rocket.rect.right <= 0:
+            self.rocket.kill()
 
 
 class Bullet(pygame.sprite.Sprite):
